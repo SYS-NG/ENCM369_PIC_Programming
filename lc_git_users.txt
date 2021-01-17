@@ -4,3 +4,4 @@ Adam,El-Khatib,adam.elkhatib@ucalgary.ca,ael-khatib,2021_ENCM369
 Hannah,Chu,hannah.k.y.chu@gmail.com,hannah-chuchu,2021_ENCM369
 Elliot,Thornborough,elliot.thornborough@ucalgary.ca,Elliot-T,2021_ENCM369
 Alec,Lamb,alec.lamb@ucalgary.ca,amlamb,2021_ENCM369
+Jailim,Lugo,jailim.lugo@ucalgary.ca,JailimLugo,2021_ENCM369
