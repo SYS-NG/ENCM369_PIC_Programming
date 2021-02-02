@@ -75,8 +75,7 @@ Promises:
 */
 void UserAppInitialize(void)
 {
-
-
+    
 } /* end UserAppInitialize() */
 
   
@@ -94,8 +93,27 @@ Promises:
 */
 void UserAppRun(void)
 {
-
-
+    //Setup Counter for Delay
+    u32 u32Counter = 400000;
+    while(u32Counter > 0)
+    {
+        u32Counter--;
+    }
+    //Reset Delay Counter
+    u32Counter = 400000;
+    //Plus 1 while PORTA < 10111111
+    while(LATA < 0xBF)
+    {
+        LATA++;
+        while(u32Counter > 0)
+        {
+        u32Counter--;
+        }
+        u32Counter = 400000;
+    }
+    //Reset PORT to 10000000
+    LATA = 0x80;
+    return;
 } /* end UserAppRun */
 
 
