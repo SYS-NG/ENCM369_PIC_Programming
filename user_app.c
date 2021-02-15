@@ -93,24 +93,11 @@ Promises:
 */
 void UserAppRun(void)
 {
-    /* Setup Counter for Delay */
-    u32 u32Counter = 400000;
-    /* decrement counter for delay */
-    while(u32Counter > 0)
-    {
-        u32Counter--;
-    }
-    /* Reset Delay Counter */
     u32Counter = 400000;
     /* Plus 1 while PORTA < 0b10111111 */
     while(LATA < 0xBF)
     {
         LATA++;
-        while(u32Counter > 0)
-        {
-        u32Counter--;
-        }
-        u32Counter = 400000;
     } /* end while loop for incrementing LATA */
     /* Reset PORT to 10000000 */
     LATA = 0x80;
