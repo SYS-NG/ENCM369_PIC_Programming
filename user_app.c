@@ -96,6 +96,7 @@ void UserAppRun(void)
     /*initialization of int variables to record relevant inputs*/
     static int previousInput = 0;
     static int currentInput = 0; 
+    static u32 u32counter = 0x00000080;
     
     /*Update current and previous input*/
     previousInput = currentInput;
@@ -105,10 +106,11 @@ void UserAppRun(void)
     if(previousInput == 0 && currentInput == 1)
     {
         /*Increments LATA is current value is less than 0b10111111, else reset LATA to 0x80*/
-        if(LATA < 0xBF)
-           LATA++;
+        if(u32counter < 0x000000BF)
+           u32counter++;
         else
-            LATA = 0x80;
+           u32counter = 0x00000080;
+        LATA = u32counter;
     }
     return;
 } /* end UserAppRun */
