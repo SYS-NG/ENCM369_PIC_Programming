@@ -94,18 +94,20 @@ Promises:
 void UserAppRun(void)
 {
     /*initialization of int variables to record relevant inputs*/
-    static int previousInput = 0;
-    static int currentInput = 0; 
+    static u32 previousInput = 0x00000010;
+    static u32 currentInput = 0x00000010; 
     static u32 u32counter = 0x00000080;
     
     /*Update current and previous input*/
     previousInput = currentInput;
-    currentInput = PORTBbits.RB5;
+    currentInput = PORTB;
     
-    /*Condition: if the input transitioned from LOW to HIGH*/
-    if(previousInput == 0 && currentInput == 1)
+    /*Condition: if the input to RB5 transitioned from LOW to HIGH
+     Consider the constant input from VDD on RB4*/
+    if(previousInput == 0x000000010 && currentInput == 0x00000030)
     {
-        /*Increments LATA is current value is less than 0b10111111, else reset LATA to 0x80*/
+        /*Increments LATA is current value is less than 0b10111111, else reset LATA to 0x80
+         extend to 32 bits*/
         if(u32counter < 0x000000BF)
            u32counter++;
         else
