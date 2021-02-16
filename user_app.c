@@ -93,14 +93,23 @@ Promises:
 */
 void UserAppRun(void)
 {
-    u32Counter = 400000;
-    /* Plus 1 while PORTA < 0b10111111 */
-    while(LATA < 0xBF)
+    /*initialization of int variables to record relevant inputs*/
+    static int previousInput = 0;
+    static int currentInput = 0; 
+    
+    /*Update current and previous input*/
+    previousInput = currentInput;
+    currentInput = PORTBbits.RB5;
+    
+    /*Condition: if the input transitioned from LOW to HIGH*/
+    if(previousInput == 0 && currentInput == 1)
     {
-        LATA++;
-    } /* end while loop for incrementing LATA */
-    /* Reset PORT to 10000000 */
-    LATA = 0x80;
+        /*Increments LATA is current value is less than 0b10111111, else reset LATA to 0x80*/
+        if(LATA < 0xBF)
+           LATA++;
+        else
+            LATA = 0x80;
+    }
     return;
 } /* end UserAppRun */
 
