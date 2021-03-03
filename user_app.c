@@ -75,7 +75,11 @@ Promises:
 */
 void UserAppInitialize(void)
 {
-    
+    /*Timer0 control register initialization*
+     * Timer on, asynchronous, 16 bit*
+     *Fosc/4, 1:16 pre-scaler, 1:1 post-scaler*/
+    T0CON0 = 0x90;
+    T0CON1 = 0x54;
 } /* end UserAppInitialize() */
 
   
@@ -93,31 +97,43 @@ Promises:
 */
 void UserAppRun(void)
 {
-    /* Setup Counter for Delay */
-    u32 u32Counter = 400000;
-    /* decrement counter for delay */
-    while(u32Counter > 0)
-    {
-        u32Counter--;
-    }
-    /* Reset Delay Counter */
-    u32Counter = 400000;
-    /* Plus 1 while PORTA < 0b10111111 */
-    while(LATA < 0xBF)
-    {
-        LATA++;
-        while(u32Counter > 0)
-        {
-        u32Counter--;
-        }
-        u32Counter = 400000;
-    } /* end while loop for incrementing LATA */
-    /* Reset PORT to 10000000 */
-    LATA = 0x80;
+    /*Read LATA to temporary variable*/
+    u8 u8output = LATA;
+    /*Increment variable*/
+    u8output++;  
+    /*Write variable into LATA*/
+    LATA = u8output|0x80;
     return;
 } /* end UserAppRun */
 
+/*!----------------------------------------------------------------------------------------------------------------------
+@fn void TimeXus(u16 u16TimeXus)
 
+@brief Sets Timer0 to count u16Microseconds
+
+Requires:
+- Timer0 configured so each tick takes 1 microsecond.
+- u16TimeXus is the number of microseconds from 1 to 65535 to be counted.
+
+Promises:
+- Pre-loads TMR0H:L to clock out desired period.
+- TMR0IF cleared.
+- Timer0 enabled.
+*/
+void TimeXus(u16 u16counter)
+{
+    /*Disable Timer During Config*/
+    T0CON0 &= 0x7F;
+    /*set intialCount to "starting value"
+     such that u16TimeXus count is required to reach 0xFFFF*/
+    u16 u16initialCount = 0xFFFF - u16counter;
+    /*Preload TMR0H and TMR0L*/
+    TMR0L = u16initialCount & 0x00FF;
+    TMR0H = u16initialCount >> 8;
+    /*Clear TMR0IF and enable Timer 0*/
+    PIR3 &= 0x7F;
+    T0CON0 |= 0x80;
+} /*End TimeXus()*/
 
 /*------------------------------------------------------------------------------------------------------------------*/
 /*! @privatesection */                                                                                            

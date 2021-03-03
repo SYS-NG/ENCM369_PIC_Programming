@@ -60,6 +60,10 @@ void main(void)
     /* System sleep */
     HEARTBEAT_OFF();
     SystemSleep();
+    /*Test TimeXus()*/
+    TimeXus(0x03E8);
+    /*Wait for TMR01F to be set*/
+    while((PIR3 & 0x80) != 0x80);
     HEARTBEAT_ON();
     
   } /* end while(1) main super loop */
