@@ -98,11 +98,23 @@ Promises:
 void UserAppRun(void)
 {
     /*Read LATA to temporary variable*/
-    static u8 u8output = 0x80;
-    /*Increment variable*/
-    u8output++;  
+    static u8 u8Output = 0x80;
+    static u8 u8Pattern [] = {0x00, 0x21, 0x12, 0x0c, 0x08, 
+                              0x10, 0x20, 0x10, 0x08, 0x04,
+                              0x02, 0x01, 0x02, 0x05, 0x0C, 
+                              0x14, 0x28, 0x30, 0x20, 0x00};
+    static int indexCounter = 0;
+    /*clear u8Output*/
+    u8Output &= 0xC0;  
+    /*change pattern*/
+    u8Output |= u8Pattern[indexCounter];
+    /*Update indexCounter*/
+    if(indexCounter == sizeof(u8Pattern)/sizeof(u8Pattern[0]))
+        indexCounter = 0;
+    else
+        indexCounter++;
     /*Write variable into LATA*/
-    LATA = u8output|0x80;
+    LATA = u8Output|0x80;
     return;
 } /* end UserAppRun */
 
