@@ -98,7 +98,7 @@ Promises:
 void UserAppRun(void)
 {
     /*Read LATA to temporary variable*/
-    u8 u8output = LATA;
+    static u8 u8output = 0x80;
     /*Increment variable*/
     u8output++;  
     /*Write variable into LATA*/
@@ -113,7 +113,7 @@ void UserAppRun(void)
 
 Requires:
 - Timer0 configured so each tick takes 1 microsecond.
-- u16TimeXus is the number of microseconds from 1 to 65535 to be counted.
+- u16counter is the number of microseconds from 1 to 65535 to be counted.
 
 Promises:
 - Pre-loads TMR0H:L to clock out desired period.
@@ -124,12 +124,15 @@ void TimeXus(u16 u16counter)
 {
     /*Disable Timer During Config*/
     T0CON0 &= 0x7F;
-    /*set intialCount to "starting value"
+    
+    /*set u16intialCount to "starting value"
      such that u16TimeXus count is required to reach 0xFFFF*/
     u16 u16initialCount = 0xFFFF - u16counter;
+    
     /*Preload TMR0H and TMR0L*/
     TMR0L = u16initialCount & 0x00FF;
     TMR0H = u16initialCount >> 8;
+    
     /*Clear TMR0IF and enable Timer 0*/
     PIR3 &= 0x7F;
     T0CON0 |= 0x80;
