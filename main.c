@@ -54,21 +54,25 @@ void main(void)
     /* Drivers */
        
     /* Applications */
-    UserAppRun();
-   
-     
+#if 0
+      TimeXus(2);
+      while((PIR3 & 0x80) != 0x80);
+      DAC1DATL += 4;
+#endif
+      
+#if 1
+      UserAppRun();
+
     /* System sleep */
     HEARTBEAT_OFF();
     SystemSleep();
-    /*Test TimeXus()*/
-    TimeXus(60000);
-    /*Wait for TMR01F to be set*/
+
+    /*2 microseconds delay*/
+    TimeXus(2);
     while((PIR3 & 0x80) != 0x80);
+    
     HEARTBEAT_ON();
-    /*Test TimeXus()*/
-    TimeXus(60000);
-    /*Wait for TMR01F to be set*/
-    while((PIR3 & 0x80) != 0x80);
+#endif
   } /* end while(1) main super loop */
   
 } /* end main() */

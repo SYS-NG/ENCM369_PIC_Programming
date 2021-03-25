@@ -91,6 +91,9 @@ void GpioSetup(void)
     TRISA = 0x00;
     ANSELA = 0x00;
     PORTA = 0x80;
+    
+    /*Set up DAC1: Vdd and Vss refs, ON, RA2 OUT*/
+    DAC1CON = 0xA0; //bx1010 0000
   
 } /* end GpioSetup() */
 
