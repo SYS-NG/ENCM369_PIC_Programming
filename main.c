@@ -68,7 +68,7 @@ void main(void)
     SystemSleep();
 
     /*2 microseconds delay*/
-    TimeXus(2);
+    TimeXus(11);
     while((PIR3 & 0x80) != 0x80);
     
     HEARTBEAT_ON();

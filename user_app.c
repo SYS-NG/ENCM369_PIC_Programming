@@ -62,7 +62,7 @@ static u8 UserApp_au8sinTable [] =
 0x0a,0x0b,0x0c,0x0e,0x0f,0x11,0x12,0x14,0x15,0x17,0x19,0x1b,0x1d,0x1f,0x21,0x23,
 0x25,0x28,0x2a,0x2c,0x2f,0x31,0x34,0x36,0x39,0x3b,0x3e,0x41,0x43,0x46,0x49,0x4c,
 0x4f,0x52,0x55,0x58,0x5a,0x5d,0x61,0x64,0x67,0x6a,0x6d,0x70,0x73,0x76,0x79,0x7c,
-}
+};
 
 /**********************************************************************************************************************
 Function Definitions
@@ -118,9 +118,44 @@ Promises:
 */
 void UserAppRun(void)
 {
-    static u8 u8index = 0;
-    DAC1DATL = UserApp_au8sinTable[u8index++];
+/*Sawtooth Wave Code*/ 
+#if 0
+    DAC1DATL++;
+#endif
     
+/*Triangular Wave Code*/    
+#if 0
+    /*Choose direction of increment*/
+    static bool directionUp = true;
+    if(DAC1DATL == 255)
+    {
+        directionUp = false;
+    }
+    if(DAC1DATL == 0)
+    {
+        directionUp = true;
+    }
+    
+    /*increment or decrement based on direction*/
+    if(directionUp)
+    {
+        DAC1DATL++;
+    }
+    else
+    {
+        DAC1DATL--;
+    }
+    
+#endif
+    
+/*Sinusoid code*/
+#if 1
+    static u8 u8index = 0;
+    
+    /*update DAC1 output using sin Table*/
+    DAC1DATL = UserApp_au8sinTable[u8index];
+    u8index += 4;
+#endif
 } /* end UserAppRun */
 
 /*!----------------------------------------------------------------------------------------------------------------------
