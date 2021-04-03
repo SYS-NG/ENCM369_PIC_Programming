@@ -66,6 +66,20 @@ extern volatile u32 G_u32SystemFlags;                     /*!< @brief From main.
 Global variable definitions with scope limited to this local application.
 Variable names shall start with "UserApp_<type>" and be declared as static.
 ***********************************************************************************************************************/
+u16 UserApp_u16ArrayNotes [] = 
+{
+E4, D4, C4, D4, E4, E4, E4, NN, 
+D4, D4, D4, NN, E4, G4, G4, NN,
+E4, D4, C4, D4, E4, E4, E4, E4, 
+D4, D4, E4, D4, C4, NN, NN, NN
+};
+u16 UserApp_u16ArrayNoteLength [] = 
+{
+N8, N8, N8, N8, N8, N8, N4, NN,
+N8, N8, N4, NN, N8, N8, N4, NN,
+N8, N8, N8, N8, N8, N8, N8, N8,
+N8, N8, N8, N8, N2, NN, NN, NN
+};
 
 
 /**********************************************************************************************************************
@@ -216,9 +230,11 @@ void UserAppInitialize(void)
     T1GCON = 0x00;
     T1CLK  = 0x01;  
     T1CON  = 0x31;  // b'00110001'
-    
-    // Test call to set frequency
-    InterruptTimerXus(4, true);
+
+    // Test call to set frequency 1kHz
+#if 0
+    InterruptTimerXus(16, true);
+#endif
 } /* end UserAppInitialize() */
 
   
@@ -236,8 +252,33 @@ Promises:
 */
 void UserAppRun(void)
 {
-
-  
+    static u8 u8ArrayCounter = 0;
+    static u16 u16duration = 0;
+    static bool nextNote = false;
+    
+    if(u8ArrayCounter >= sizeof(UserApp_u16ArrayNotes)/sizeof(UserApp_u16ArrayNotes[0]))
+    {
+        InterruptTimerXus(NN, true);
+        u8ArrayCounter = 0;
+        u16duration = 5000;
+    }
+    
+    if(u16duration == 0 && nextNote == false)
+    {
+        InterruptTimerXus(NN, true);
+        u16duration = REGULAR_NOTE_ADJUSTMENT;
+        nextNote = true;
+    }
+    
+    u16duration -= 1;
+    
+    if(u16duration == 0 && nextNote == true)
+    {
+        InterruptTimerXus(UserApp_u16ArrayNotes[u8ArrayCounter], true);
+        u16duration = UserApp_u16ArrayNoteLength[u8ArrayCounter];
+        u8ArrayCounter += 1;
+        nextNote = false;
+    }    
 } /* end UserAppRun() */
 
 

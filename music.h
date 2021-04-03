@@ -20,6 +20,8 @@ Definitions for musical notes
 #define N4                        QUARTER_NOTE              
 #define N8                        EIGHTH_NOTE               
 #define N6                        SIXTEENTH_NOTE            
+#define N7_8                      N2 + N4 + N8
+
 
 /* Note length adjustments */
 #define REGULAR_NOTE_ADJUSTMENT   (u16)50
@@ -38,6 +40,7 @@ Definitions for musical notes
 #define NOTE_F4                   (u16)45  // f = 349
 #define NOTE_G4                   (u16)40  // f = 392
 #define NOTE_A4                   (u16)36  // f = 440
+#define NOTE_B4                   (u16)31  // f = 490
 #define NOTE_NONE                 (u16)0
 
 /* Musical note definitions - short hand */
@@ -47,5 +50,6 @@ Definitions for musical notes
 #define F4                   (u16)NOTE_F4
 #define G4                   (u16)NOTE_G4
 #define A4                   (u16)NOTE_A4
+#define B4                   (u16)NOTE_B4
 
 #define NN                   (u16)NOTE_NONE
